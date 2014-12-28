@@ -1,0 +1,15 @@
+{
+  "name": "NavyJS",
+  "version": "0.0.1",
+  "description": "application framework for web frontend.",
+  "main": "index.js",
+  "scripts": {
+    "build": "node ./script/build.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "h13i32maru",
+  "license": "MIT",
+  "devDependencies" : {
+    "traceur" : ""
+  }
+}
