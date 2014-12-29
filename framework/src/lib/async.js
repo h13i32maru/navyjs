@@ -1,2 +1,3 @@
-export default function async() {
+export default function async(generatorFunction) {
+  generatorFunction();
 }

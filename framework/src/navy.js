@@ -1,4 +1,1 @@
-import Test from './lib/async';
-
-var t = new Test('bob');
-t.test();
+import async from './lib/async';

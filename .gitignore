@@ -1,4 +1,6 @@
-node_modules
-build
-npm-debug.log
-bower_components
+framework/node_modules
+framework/build
+framework/npm-debug.log
+framework/bower_components
+framework/coverage
+

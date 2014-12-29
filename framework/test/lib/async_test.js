@@ -1,4 +1,4 @@
-import async from '../../src/lib/async';
+let async = System.get('../src/lib/async').default;
 
 describe('async: ', ()=>{
   it('is function', ()=>{
