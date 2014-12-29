@@ -19,3 +19,4 @@ install:
   - cd framework
   - npm install
   - bower install
+  - cd ../
