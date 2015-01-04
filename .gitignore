@@ -3,4 +3,6 @@ framework/build
 framework/npm-debug.log
 framework/bower_components
 framework/coverage
+framework/tmp
+framework/doc
 

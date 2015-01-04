@@ -1,17 +1,40 @@
 /**
- * this function executes an asynchronous function as synchronous function(aka async/await).
- * an asynchronous function have to be wrapped in Generator Function.
- * and an asynchronous function must be Promise or Promise like.
- * such as Promise like is Promise[] or Object.<string, Promise>.
- * this function is implemented by referring to [tj/co](https://github.com/tj/co).
- * @param {function} generatorFunction Generator Function(function *(){}).
- * @return {Promise} if async function was successful, the promise is fulfilled.
+ * Executes an asynchronous function as synchronous function(aka async/await).
+ *
+ * An asynchronous function have to be wrapped in Generator Function.
+ * And an asynchronous function must be Promise or Promise like.
+ * Such as Promise like is ``Promise[]`` or ``Object.<string, Promise>``.
+ * This function is implemented by referring to [tj/co](https://github.com/tj/co).
+ * @param {function} generatorFunction Generator Function wraps asynchronous function.
+ * @return {Promise} returned Promise is fulfilled if this function was successful.
+ *
  * @example
  * async(function *(){
- *   var result = yield request('http://example.com');
+ *   try {
+ *     var result = yield request('http://example.com');
+ *   } catch(e) {
+ *     console.log(e);
+ *     throw e;
+ *   }
  *   return result.responseText;
  * }).then((val)=>{
  *   console.log(val);
+ * }).catch((e)=>{
+ *   console.log(e.message);
+ * });
+ *
+ * @example
+ * async(function *(){
+ *   var result = yield [request('http://example.com'), request('http://example.org')];
+ *   console.log(result[0].responseText);
+ *   console.log(result[1].responseText);
+ * });
+ *
+ * @example
+ * async(function *(){
+ *   var result = yield {com: request('http://example.com'), org: request('http://example.org')};
+ *   console.log(result.com.responseText);
+ *   console.log(result.org.responseText);
  * });
  */
 export default function async(generatorFunction) {

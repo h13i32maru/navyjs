@@ -4,7 +4,8 @@
   "description": "application framework for web frontend.",
   "scripts": {
     "build": "bash ./script/build.sh",
-    "test": "bash ./script/test.sh"
+    "test": "bash ./script/test.sh",
+    "jsdoc": "bash ./script/build_jsdoc.sh"
   },
   "author": "h13i32maru",
   "license": "MIT",
