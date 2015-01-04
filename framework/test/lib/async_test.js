@@ -19,8 +19,8 @@ describe('async: ', ()=>{
     assert(false, 'force fail test');
   }
 
-  it('executes an async function as sync function.', (done)=>{
-    async(function*(){
+  it('executes an async function as sync function.', ()=>{
+    return async(function*(){
       var x = yield delayValue(VALUE, 100);
       assert.equal(x, VALUE);
 
@@ -30,14 +30,13 @@ describe('async: ', ()=>{
       return x;
     }).then((value)=>{
       assert.equal(value, VALUE);
-      done();
     });
   });
 
-  it('throws exception if an async function throws exception.', (done)=>{
-    async(function*(){
+  it('throws exception if an async function throws exception.', ()=>{
+    return async(function*(){
       try {
-        var x = yield delayValue(VALUE, -1);
+        yield delayValue(VALUE, -1);
         assert(false);
       } catch (e) {
         assert(e instanceof Error);
@@ -45,25 +44,22 @@ describe('async: ', ()=>{
 
       var y = yield delayValue(VALUE * 2, 100);
       assert.equal(y, VALUE * 2);
-      done();
     });
   });
 
-  it('is rejected if exception is thrown.', (done)=>{
-    async(function*(){
+  it('is rejected if exception is thrown.', ()=>{
+    return async(function*(){
       throw new Error();
-    }).catch((e)=>{
+    }).then(failTest, (e)=>{
       assert(e instanceof Error);
-      done();
     });
   });
 
-  it('is rejected if an async function throws unhandled exception.', (done)=>{
-    async(function*(){
-      var x = yield delayValue(VALUE, -1);
-    }).catch((e)=>{
+  it('is rejected if an async function throws unhandled exception.', ()=>{
+    return async(function*(){
+      yield delayValue(VALUE, -1);
+    }).then(failTest, (e)=>{
       assert(e instanceof Error);
-      done();
     });
   });
 
