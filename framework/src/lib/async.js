@@ -1,3 +1,19 @@
+/**
+ * this function executes an asynchronous function as synchronous function(aka async/await).
+ * an asynchronous function have to be wrapped in Generator Function.
+ * and an asynchronous function must be Promise or Promise like.
+ * such as Promise like is Promise[] or Object.<string, Promise>.
+ * this function is implemented by referring to [tj/co](https://github.com/tj/co).
+ * @param {function} generatorFunction Generator Function(function *(){}).
+ * @return {Promise} if async function was successful, the promise is fulfilled.
+ * @example
+ * async(function *(){
+ *   var result = yield request('http://example.com');
+ *   return result.responseText;
+ * }).then((val)=>{
+ *   console.log(val);
+ * });
+ */
 export default function async(generatorFunction) {
   var gen = generatorFunction();
 
@@ -37,13 +53,19 @@ export default function async(generatorFunction) {
   });
 }
 
+/**
+ * this function converts value to Promise.
+ * @private
+ * @param {Promise | Promise[] | Object.<string, Promise>} value Promise or Promise like.
+ * @returns {?Promise} Promise.
+ */
 function toPromise(value) {
   if (value instanceof Promise) {
     return value;
   }
 
   if (Array.isArray(value)) {
-    let result = value.every((v)=>{
+    var result = value.every((v)=>{
       return v instanceof Promise;
     });
     if (result) {
