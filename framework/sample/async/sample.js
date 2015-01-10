@@ -1,5 +1,3 @@
-import async from '../../src/lib/async';
-
 function sleep(msec) {
   return new Promise((resolve, reject)=>{
     if (msec < 0) {
