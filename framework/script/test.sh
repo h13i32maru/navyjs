@@ -11,6 +11,7 @@ case "$1" in
         ./node_modules/.bin/karma start test/karma.conf.js --browsers Safari
         ;;
     * )
-        ./node_modules/.bin/karma start test/karma.conf.js
+        ./node_modules/.bin/karma start test/karma.conf.js --browsers ChromeTravis
+#        ./node_modules/.bin/karma start test/karma.conf.js
         ;;
 esac
