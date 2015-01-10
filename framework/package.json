@@ -18,6 +18,7 @@
     "karma": "",
     "karma-mocha": "",
     "karma-chrome-launcher": "",
+    "karma-safari-launcher": "",
     "karma-cli": "",
     "karma-coverage": "",
     "jsdoc": "",

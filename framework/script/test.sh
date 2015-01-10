@@ -3,9 +3,14 @@
 ./script/build.sh
 ./script/build_test.sh
 
-if [ -n "$TRAVIS" ]
-then
-    ./node_modules/.bin/karma start test/karma.conf.js --browsers ChromeTravis
-else
-    ./node_modules/.bin/karma start test/karma.conf.js
-fi
+case "$1" in
+    "travis" )
+        ./node_modules/.bin/karma start test/karma.conf.js --browsers ChromeTravis
+        ;;
+    "safari" )
+        ./node_modules/.bin/karma start test/karma.conf.js --browsers Safari
+        ;;
+    * )
+        ./node_modules/.bin/karma start test/karma.conf.js
+        ;;
+esac
