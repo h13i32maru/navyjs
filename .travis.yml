@@ -4,7 +4,7 @@ node_js:
 
 script:
   - cd framework/
-  - npm test -- travis
+  - TRAVIS=1 npm run test
 
 before_install:
   - export CHROME_BIN=chromium-browser
