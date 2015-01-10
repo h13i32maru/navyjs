@@ -5,7 +5,9 @@
   "scripts": {
     "build": "bash ./script/build.sh",
     "test": "bash ./script/test.sh",
-    "jsdoc": "bash ./script/build_jsdoc.sh"
+    "jsdoc": "bash ./script/build_jsdoc.sh",
+    "sample": "bash ./script/build_sample.sh",
+    "server": "bash ./script/server.sh"
   },
   "author": "h13i32maru",
   "license": "MIT",
@@ -18,6 +20,7 @@
     "karma-chrome-launcher": "",
     "karma-cli": "",
     "karma-coverage": "",
-    "jsdoc": ""
+    "jsdoc": "",
+    "http-server": ""
   }
 }

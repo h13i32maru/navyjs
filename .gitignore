@@ -5,4 +5,5 @@ framework/bower_components
 framework/coverage
 framework/tmp
 framework/doc
+framework/sample/**/es5*.js
 
