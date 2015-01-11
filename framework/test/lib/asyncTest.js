@@ -1,5 +1,3 @@
-let async = System.get('../src/lib/async').default;
-
 describe('async: ', ()=>{
   var VALUE = 123;
 
