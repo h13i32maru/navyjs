@@ -42,6 +42,7 @@ still nothing.
   - refactor: code change that neither fixes a bug or adds a feature
   - test: add test
   - chore: build process
+  - sample: add sample
 - scope
   - ``async``, ``indexeddb``, etc ...
 - subject
