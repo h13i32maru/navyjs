@@ -13,6 +13,7 @@
   "license": "MIT",
   "devDependencies" : {
     "traceur" : "",
+    "6to5": "",
     "mocha": "",
     "espower-cli": "",
     "karma": "",
