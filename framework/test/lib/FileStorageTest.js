@@ -5,32 +5,38 @@ describe('FileStorage: ', ()=>{
     });
   }
 
+  const DB_NAME = 'org.navyjs';
+  const files = [
+    {path: '/sample/hoge.js', content: 'this is hoge.js', hash: '00000000000'},
+    {path: '/sample/foo.js', content: 'this is foo.js', hash: '11111111'}
+  ];
+  const file = files[0];
+
+  after(()=>{
+    var storage = new FileStorage(DB_NAME);
+    storage.deleteStorage();
+  });
+
   it('writes and reads one file.', ()=>{
     return async(function*(){
-      var storage = new FileStorage('org.navyjs');
+      var storage = new FileStorage(DB_NAME);
       yield storage.open();
 
-      var file = {path: '/sample/hoge.js', content: 'this is hoge.js', hash: '00000000000'};
       yield storage.write(file);
 
-      var result = yield storage.read('/sample/hoge.js');
+      var result = yield storage.read(file.path);
       assert.deepEqual(result, file);
     });
   });
 
   it('writes and reads multi files.', ()=>{
     return async(function*(){
-      var storage = new FileStorage('org.navyjs');
+      var storage = new FileStorage(DB_NAME);
       yield storage.open();
 
-      var files = [
-        {path: '/sample/hoge.js', content: 'this is hoge.js', hash: '00000000000'},
-        {path: '/sample/foo.js', content: 'this is foo.js', hash: '11111111'}
-      ];
       yield storage.write(files);
 
-      var result = yield storage.read(['/sample/hoge.js', '/sample/foo.js']);
-
+      var result = yield storage.read([files[0].path, files[1].path]);
       sort(files);
       sort(result);
       assert.deepEqual(result, files);
@@ -39,17 +45,12 @@ describe('FileStorage: ', ()=>{
 
   it('reads all files.', ()=>{
     return async(function*(){
-      var storage = new FileStorage('org.navyjs');
+      var storage = new FileStorage(DB_NAME);
       yield storage.open();
 
-      var files = [
-        {path: '/sample/hoge.js', content: 'this is hoge.js', hash: '00000000000'},
-        {path: '/sample/foo.js', content: 'this is foo.js', hash: '11111111'}
-      ];
       yield storage.write(files);
 
       var result = yield storage.readAll();
-
       sort(files);
       sort(result);
       assert.deepEqual(result, files);
@@ -58,51 +59,37 @@ describe('FileStorage: ', ()=>{
 
   it('removes a file.', ()=>{
     return async(function*(){
-      var storage = new FileStorage('org.navyjs');
+      var storage = new FileStorage(DB_NAME);
       yield storage.open();
 
-      var files = [
-        {path: '/sample/hoge.js', content: 'this is hoge.js', hash: '00000000000'},
-        {path: '/sample/foo.js', content: 'this is foo.js', hash: '11111111'}
-      ];
       yield storage.write(files);
 
-      yield storage.remove('/sample/hoge.js');
+      yield storage.remove(files[0].path);
 
-      var result = yield storage.read('/sample/hoge.js');
-
+      var result = yield storage.read(files[0].path);
       assert.equal(result, null);
     });
   });
 
   it('removes multi files.', ()=>{
     return async(function*(){
-      var storage = new FileStorage('org.navyjs');
+      var storage = new FileStorage(DB_NAME);
       yield storage.open();
 
-      var files = [
-        {path: '/sample/hoge.js', content: 'this is hoge.js', hash: '00000000000'},
-        {path: '/sample/foo.js', content: 'this is foo.js', hash: '11111111'}
-      ];
       yield storage.write(files);
 
-      yield storage.remove(['/sample/hoge.js', '/sample/foo.js']);
+      yield storage.remove([files[0].path, files[1].path]);
 
-      var result = yield storage.read(['/sample/hoge.js', '/sample/foo.js']);
-
+      var result = yield storage.read([files[0].path, files[1].path]);
       assert.deepEqual(result, []);
     });
   });
 
   it('removes all files.', ()=>{
     return async(function*(){
-      var storage = new FileStorage('org.navyjs');
+      var storage = new FileStorage(DB_NAME);
       yield storage.open();
 
-      var files = [
-        {path: '/sample/hoge.js', content: 'this is hoge.js', hash: '00000000000'},
-        {path: '/sample/foo.js', content: 'this is foo.js', hash: '11111111'}
-      ];
       yield storage.write(files);
 
       yield storage.removeAll();
@@ -116,11 +103,11 @@ describe('FileStorage: ', ()=>{
 
   it('throws error when file is invalid.', ()=> {
     return async(function*(){
-      var storage = new FileStorage('org.navyjs');
+      var storage = new FileStorage(DB_NAME);
       yield storage.open();
 
-      var file = {path: null, content: 'this is hoge.js', hash: '00000000000'};
       try {
+        var file = {path: null, content: 'invalid', hash: 12345};
         yield storage.write(file);
       } catch(e) {
         assert(e instanceof Error);
@@ -133,8 +120,11 @@ describe('FileStorage: ', ()=>{
 
   it('deletes storage.', ()=>{
     return async(function*(){
-      var storage = new FileStorage('org.navyjs');
+      var storage = new FileStorage(DB_NAME);
       yield storage.open();
+
+      yield storage.write(file);
+
       storage.deleteStorage();
 
       try {
