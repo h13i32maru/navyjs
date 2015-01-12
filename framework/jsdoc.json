@@ -3,5 +3,13 @@
   "markdown": {
     "parser": "gfm",
     "hardwrap": true
+  },
+  "source": {
+    "include": "./tmp/src/"
+  },
+  "opts": {
+    "template": "tmp/jsdoc/default",
+    "destination": "./doc/",
+    "recurse": true
   }
 }
