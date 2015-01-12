@@ -1,3 +1,27 @@
+/**
+ * @classdesc
+ * FileStorage writes and reads {@link FileStorage.File}.
+ * this uses [IndexedDB](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API) as backend storage.
+ *
+ * example
+ *
+ * ```
+ * async(function*(){
+ *   var storage = new FileStorage('com.example');
+ *   yield storage.open();
+ *   yield storage.write({path: '/foo.txt', content: 'this is foo'});
+ *   var result = yield storage.read('/foo.txt');
+ *   console.log(result);
+ * });
+ * ```
+ *
+ * @class
+ * @desc
+ * Creates the file storage.
+ * But preparation of read and write has not been completed.
+ * You need to call the {@link FileStorage#open} method.
+ * @param {string} name Storage name.
+ */
 export default class FileStorage {
   constructor(name) {
     this._version = 1;
@@ -6,6 +30,10 @@ export default class FileStorage {
     this._storeName = 'files';
   }
 
+  /**
+   * Open a file storage to read and write.
+   * @return {Window.Promise} This Promise#then does not have a value.
+   */
   open() {
     return new Promise((resolve, reject)=>{
       var request = indexedDB.open(this._name, this._version);
@@ -28,11 +56,21 @@ export default class FileStorage {
     });
   }
 
+  /**
+   * Create object store.
+   * @param {{target:{result: IDBDatabase}}} event
+   * @private
+   */
   _onUpgrade(event) {
     var db = event.target.result;
     db.createObjectStore(this._storeName, {keyPath: 'path'});
   }
 
+  /**
+   * Write file(s) to storage.
+   * @param {FileStorage.File | FileStorage.File[]} files File(s) for writing to storage.
+   * @returns {Window.Promise} this Promise#then does not have a value.
+   */
   write(files) {
     return new Promise((resolve, reject)=> {
       if (!Array.isArray(files)) {
@@ -55,6 +93,11 @@ export default class FileStorage {
     });
   }
 
+  /**
+   * Read file(s) from storage.
+   * @param {string | string[]} paths Path(s) for reading from storage.
+   * @returns {Window.Promise} This Promise#then has {@link FileStorage.File} or array of {@link FileStorage.File}.
+   */
   read(paths) {
     return new Promise((resolve, reject)=> {
       var isSinglePath = false;
@@ -89,6 +132,10 @@ export default class FileStorage {
     })
   }
 
+  /**
+   * Read all files from storage.
+   * @returns {Window.Promise} This Promise#then has array of {@link FileStorage.File}.
+   */
   readAll() {
     return new Promise((resolve, reject)=> {
       var files = [];
@@ -112,6 +159,11 @@ export default class FileStorage {
     });
   }
 
+  /**
+   * Remove file(s) from storage.
+   * @param {string | string[]} paths Path(s) for removing from storage.
+   * @returns {Window.Promise} This Promise#then does not have a value.
+   */
   remove(paths) {
     return new Promise((resolve, reject)=> {
       if (!Array.isArray(paths)) {
@@ -130,6 +182,10 @@ export default class FileStorage {
     });
   }
 
+  /**
+   * Remove all files from storage.
+   * @returns {Window.Promise} This Promise#then does not have a value.
+   */
   removeAll() {
     return new Promise((resolve, reject)=> {
 
@@ -143,6 +199,10 @@ export default class FileStorage {
     });
   }
 
+  /**
+   * Delete storage from browser.
+   * Must not use this storage, after call this method.
+   */
   deleteStorage() {
     if (this._db) {
       this._db.close();
@@ -154,7 +214,21 @@ export default class FileStorage {
     };
   }
 
+  /**
+   * Validate file.
+   * @param {FileStorage.File} file
+   * @returns {boolean}
+   * @private
+   */
   _validateFile(file) {
     return !! file.path;
   }
 }
+
+/**
+ * @typedef {Object} FileStorage.File
+ * @property {!string} path A File path.
+ * @property {?string} content A file content.
+ * @property {?string} hash A file hash(md5, sha1, base64, etc).
+ * @property {?string} mime A file mime type(text/javascript, text/html, text/stylesheet, etc).
+ */
