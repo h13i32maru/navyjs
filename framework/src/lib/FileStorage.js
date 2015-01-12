@@ -144,14 +144,14 @@ export default class FileStorage {
   }
 
   deleteStorage() {
-    return new Promise((resolve, reject)=> {
+    if (this._db) {
       this._db.close();
-      var request = indexedDB.deleteDatabase(this._name);
-      request.onsuccess = (event)=> {
-        resolve(event);
-      };
-      reject.onerror = reject;
-    });
+    }
+
+    var request = indexedDB.deleteDatabase(this._name);
+    request.onerror = ()=> {
+      throw new request.error;
+    };
   }
 
   _validateFile(file) {
