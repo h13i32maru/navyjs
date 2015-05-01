@@ -1,0 +1,7 @@
+{
+  "hash": "1",
+  "files": [
+    {"path": "/sample/webinstaller/hoge.js", "hash": "hoge1", "mime": "text/javascript"},
+    {"path": "/sample/webinstaller/foo.css", "hash": "foo1", "mime": "text/css"}
+  ]
+}

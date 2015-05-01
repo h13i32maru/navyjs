@@ -1,3 +1,6 @@
+// todo: write test
+// todo: write doc
+// todo: write sample
 export default class WebInstaller {
   constructor(manifestUrl) {
     this._remoteManifestUrl = manifestUrl;
@@ -126,6 +129,7 @@ export default class WebInstaller {
   _updateFiles(files) {
     return async(function*(){
       var promises = [];
+      // todo: limit parallel request.
       for (var file of files) {
         var promise = this._updateFile(file);
         promises.push(promise);
